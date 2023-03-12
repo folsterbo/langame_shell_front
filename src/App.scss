@@ -1,0 +1,25 @@
+/*@import "./scss/base/variables";
+@import "./scss/base/helpers";
+@import "./scss/base/mixins";
+@import "./scss/base/reset";
+@import "./scss/base/typography";
+@import "./scss/base/helpers";
+
+@import "./scss/layouts/common";
+@import "./scss/layouts/header";
+@import "./scss/layouts/footer";
+
+@import "./scss/pages/index";*/
+@import "vue-select/src/scss/vue-select.scss";
+
+//Стилизация скролла
+::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+    background-color: rgb(196, 196, 255);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(77, 77, 211);
+    border-radius: 4px;
+}
