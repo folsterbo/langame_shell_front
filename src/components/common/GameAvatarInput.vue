@@ -28,6 +28,7 @@ export default {
             src: this.defaultSrc,
             file: null,
             isVisible: false,
+            fileName: null,
         }
     },
     methods: {
@@ -47,6 +48,8 @@ export default {
         },
         change(e) {
             this.file = e.target.files[0];
+            this.fileName = e.target.files[0].name;
+            this.$emit('fileChanged', this.fileName);
             this.$emit('input', this.file);
             let reader = new FileReader();
             reader.readAsDataURL(this.file);
@@ -65,7 +68,6 @@ export default {
     width: 150px;
     height: 240px;
     position: relative;
-    border: 2px solid rgb(77, 77, 211);
     overflow: hidden;
 }
 
@@ -74,8 +76,9 @@ export default {
     height: 100%;
     object-fit: cover;
     object-position: center center;
-    background-color: rgb(77, 77, 211, .3);
+    background-color: #dbe7f5;
 }
+
 .game-avatar-btn-group {
     position: absolute;
     display: flex;
@@ -84,6 +87,6 @@ export default {
     height: 50px;
     width: 100%;
     bottom: 0;
-    background-color: rgb(77, 77, 211, .5);
+    background-color: #1867c0;
 }
 </style>

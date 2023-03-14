@@ -16,10 +16,17 @@
 ::-webkit-scrollbar {
     height: 8px;
     width: 8px;
-    background-color: rgb(196, 196, 255);
+    background-color: #F5F5F5;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgb(77, 77, 211);
+    background-color: #878787;
     border-radius: 4px;
+}
+
+.two-columns {
+    width: calc((100% - 64px)/2);
+}
+.field-error {
+    color: rgba(238,63,88);
 }

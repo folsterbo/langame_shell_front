@@ -183,24 +183,26 @@ export default {
 
 <style lang="scss" scoped>
 input {
-    background-color: rgb(196, 196, 255);
+    background-color: #e7f0fb;
     border-radius: 4px;
     width: 100%;
     outline: none;
-    border: 2px solid rgb(196, 196, 255);
+    border: 2px solid #e7f0fb;
     padding: 12px 42px 12px 10px;
     font-size: 16px;
     line-height: 24px;
     text-overflow: ellipsis;
 }
 input:focus {
-    border: 2px solid rgb(77, 77, 211);
+    border: 2px solid #1867c0;
 }
 input:disabled {
     background-color: #D1D5DF;
+    border: 2px solid #D1D5DF;
 }
 input.danger {
     background-color: rgba(238,63,88,.16);
+    border: 2px solid rgba(238,63,88,.16);
 }
 .input-items {
     position: absolute;
@@ -224,5 +226,10 @@ input.danger {
 }
 .field-value {
     position: relative;
+}
+.field-validate-error {
+    font-size: 14px;
+    margin-top: 4px;
+    color: red;
 }
 </style>

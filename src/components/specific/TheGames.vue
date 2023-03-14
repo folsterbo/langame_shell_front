@@ -1,24 +1,26 @@
 <template>
     <div class="d-flex flex-column">
         <div class="d-flex justify-end pb-4">
-            <v-btn color="accent" @click="$router.push('/applications/game-create')">Добавить игру</v-btn>
+            <v-btn color="primary" x-large @click="$router.push('/applications/game-create')">Добавить игру</v-btn>
         </div>
         <div class="d-flex flex-wrap">
             <div v-for="(game, i) in games" :key="i" class="d-flex flex-column align-center px-2 pb-2 pt-10 game"
                 @mouseover="handleMouseOver(game['id'])" @mouseout="handleMouseOut()">
-                <img :src="game.image" alt="img" class="game-img">
+                <img :src="gameCover(game['cover'])" alt="img" class="game-img">
                 <div class="d-flex text-subtitle-1 game-name pt-2">{{ game.name }}</div>
                 <div class="game-edit" v-show="isVisible(game)">
                     <v-btn icon color="indigo" @click="editGame(game['id'])">
                         <v-icon>mdi-pencil</v-icon>
                     </v-btn>
-                    <v-btn icon color="indigo" @click="deleteGame(game['id'])">
+                    <v-btn icon color="indigo" @click="deleteGame(game)">
                         <v-icon>mdi-trash-can-outline</v-icon>
                     </v-btn>
                 </div>
             </div>
         </div>
-        <v-alert v-if="gameDeleted"  dismissible type="success" class="alert">Игра удалена</v-alert>
+        <v-alert v-if="gameDeleted" dismissible type="success" class="alert" @input="gameDeleted=false;">
+            Игра {{lastClickedGameName}} удалена
+        </v-alert>
     </div>
 </template>
 
@@ -30,51 +32,59 @@ export default {
     },
     data: function () {
         return {
-            games: [
+            /*games: [
                 {
                     id: 1,
                     name: 'World of Warcraft',
-                    image: require('../../assets/img/2023-03-03-the-cabin-on-the-lake-1-58020.jpeg')
+                    cover: require('../../assets/img/2023-03-03-the-cabin-on-the-lake-1-58020.jpeg')
                 },
                 {
                     id: 2,
                     name: 'Apex Legends',
-                    image: require('../../assets/img/2023-03-06-the-top-of-the-mountain-1-58073.jpeg')
+                    cover: require('../../assets/img/2023-03-06-the-top-of-the-mountain-1-58073.jpeg')
                 },
                 {
                     id: 3,
                     name: 'The Elder Scrolls 5: Skyrim',
-                    image: require('../../assets/img/2023-03-07-kitty-1-58107.jpeg')
+                    cover: require('../../assets/img/2023-03-07-kitty-1-58107.jpeg')
                 },
                 {
                     id: 4,
                     name: 'Batman: Arkham City',
-                    image: require('../../assets/img/2023-03-08-northern-cardinal-1-58144.jpeg')
+                    cover: require('../../assets/img/2023-03-08-northern-cardinal-1-58144.jpeg')
                 },
                 {
                     id: 5,
                     name: 'Starfield',
-                    image: require('../../assets/img/starfield-mobile.jpg')
+                    cover: require('../../assets/img/starfield-mobile.jpg')
                 },
                 {
                     id: 6,
                     name: 'Diablo IV',
-                    image: require('../../assets/img/11ad4aa209-1_1390x600.jpg')
+                    cover: require('../../assets/img/11ad4aa209-1_1390x600.jpg')
                 },
                 {
                     id: 7,
                     name: 'Star Wars Jedi: Survivor',
-                    image: require('../../assets/img/hhgwp96sk6gvzpdudurfog.jpeg')
+                    cover: require('../../assets/img/hhgwp96sk6gvzpdudurfog.jpeg')
                 },
                 {
                     id: 8,
                     name: 'Redfall',
-                    image: require('../../assets/img/redfall.jpeg')
+                    cover: require('../../assets/img/redfall.jpeg')
                 },
-            ],
+            ],*/
             lastHoveredGameId: 0,
             gameDeleted: false,
+            isUpdateError: false,
+            games: [],
+            lastClickedGameName: '',
         }
+    },
+    computed: {
+        requestRoute: function () {
+            return process.env.VUE_APP_HOST + '/shell/games';
+        },
     },
     methods: {
         handleMouseOver(id) {
@@ -89,10 +99,45 @@ export default {
         editGame(id) {
             this.$router.push('/applications/games/' + id)
         },
-        deleteGame(id) {
-            console.log('удалить' + id);
-            this.gameDeleted = true;
+        deleteGame(game) {
+            const url = process.env.VUE_APP_HOST + '/shell/games/' + game.id;
+            this.lastClickedGameName = game.name;
+            this.axios.delete(
+                url,
+            ).then(response => {
+                if (response.data?.success) {
+                    this.updateData();
+                    this.gameDeleted = true;
+                } else {
+                    this.isUpdateError = true;
+                    console.log(response?.data);
+                }
+            }).catch(error => {
+                console.log(error);
+            });
         },
+        updateData() {
+            this.axios.get(
+                this.requestRoute,
+            ).then(response => {
+                if (response.data?.success) {
+                    this.games = response?.data?.items;
+                } else {
+                    console.log(response?.data);
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+        gameCover(cover) {
+            if (cover) {
+                return require('@/assets/img/' + cover);
+            }
+            return require('@/assets/img/default_image.png');
+        }
+    },
+    created() {
+        this.updateData();
     },
 }
 
@@ -117,10 +162,11 @@ export default {
     border-radius: 12px;
     object-fit: cover;
     object-position: center center;
+    background-color: #dbe7f5;
 }
 
 .game:hover {
-    background-color: rgb(32, 178, 170, .1);
+    background-color: #dbe7f5;
     border-radius: 12px;
     cursor: default;
 }
@@ -128,6 +174,7 @@ export default {
 .game-name {
     width: 150px;
 }
+
 .alert {
     position: fixed;
     bottom: 0;

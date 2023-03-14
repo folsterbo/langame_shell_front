@@ -31,6 +31,6 @@ export default {
 
 <style  lang="scss">
 .v-btn.active {
-    border: 2px solid rgb(77, 77, 211) !important;
+    border: 2px solid #1867c0 !important;
 }
 </style>

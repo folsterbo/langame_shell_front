@@ -86,13 +86,13 @@ export default {
         position: relative;
         margin-right: 12px;
         cursor: pointer;
-        border: 2px solid rgb(77, 77, 211);
+        border: 2px solid #1867c0;
         border-radius: 4px;
         padding: 0;
 
         &:checked {
-            background-color: rgb(196, 196, 255);
-            border-color: rgb(77, 77, 211);
+            background-color: #F5F5F5;
+            border-color: #1867c0;
 
             &:after {
                 content: '';
@@ -100,7 +100,7 @@ export default {
                 position: absolute;
                 width: 7px;
                 height: 11px;
-                border: 2px solid black ;
+                border: 2px solid #1867c0 ;
                 border-top: 0;
                 border-left: 0;
                 right: 6px;
@@ -109,7 +109,7 @@ export default {
             }
 
             &:hover {
-                background-color: rgb(164, 164, 255);
+                background-color: #e7f0fb;
             }
         }
 
@@ -124,7 +124,8 @@ export default {
         &:hover {
             &:not(:checked) {
                 &:not(:disabled) {
-                    border-color: rgb(164, 164, 255);
+                    border-color: #1867c0;
+                    background-color: #e7f0fb;
                 }
             }
         }
